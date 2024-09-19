@@ -1,6 +1,6 @@
 plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.spongepowered.mixin' version '0.7.+'
+    // 'org.spongepowered.mixin' version '0.7.+'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'maven-publish'
     id 'idea'
@@ -90,52 +90,52 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // MIXINS *****************************************************************************************************
-    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+    //annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 
     // IRONS SPELLS N SPELLBOOKS **********************************************************************************
     compileOnly fg.deobf("io.redspace.ironsspellbooks:irons_spellbooks:${irons_spells_version}")
     runtimeOnly fg.deobf("io.redspace.ironsspellbooks:irons_spellbooks:${irons_spells_version}")
 
     // GECKOLIB ***************************************************************************************************
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${geckolib_version}")
+    //implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${geckolib_version}")
 
     // CAELUS *****************************************************************************************************
-    compileOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:${caelus_version}:api")
-    runtimeOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:${caelus_version}")
+    //compileOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:${caelus_version}:api")
+    //runtimeOnly fg.deobf("top.theillusivec4.caelus:caelus-forge:${caelus_version}")
 
     // PLAYER ANIMATOR ********************************************************************************************
-    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}")
+    //implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}")
 
     // TETRA ******************************************************************************************************
-    compileOnly fg.deobf("se.mickelus.mutil:mutil:${mutil_version}")
-    compileOnly fg.deobf("curse.maven:tetra-${tetra_version}")
+    //compileOnly fg.deobf("se.mickelus.mutil:mutil:${mutil_version}")
+    //compileOnly fg.deobf("curse.maven:tetra-${tetra_version}")
     // If you want to run with tetra in dev comment the above line and uncomment the following 2 lines
     //runtimeOnly fg.deobf("curse.maven:tetra-${tetra_version}")
     //implementation fg.deobf("se.mickelus.mutil:mutil:${mutil_version}")
 
     // JEI ********************************************************************************************************
-    compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-forge:${jei_version}")
+    //compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}")
+    //compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}")
+    //runtimeOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-forge:${jei_version}")
 
     // CURIOS *****************************************************************************************************
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    //implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
     //Uncomment the following line to run with Curios in dev
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+    //runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
 
     // BETTER COMBAT **********************************************************************************************
     //runtimeOnly fg.deobf("curse.maven:better-combat-by-daedelus-${better_combat_version}")
     //runtimeOnly fg.deobf("curse.maven:cloth-config-348521:4633416")
 
     // PATCHOULI **************************************************************************************************
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    //compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
+    //runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     // APOTHEOSIS
-    compileOnly fg.deobf("curse.maven:apotheosis-${apotheosis_version}")
-    runtimeOnly fg.deobf("curse.maven:apotheosis-${apotheosis_version}")
-    runtimeOnly fg.deobf("curse.maven:placebo-${placebo_version}")
-    runtimeOnly fg.deobf("curse.maven:attributeslib-${attributeslib_version}")
+    //compileOnly fg.deobf("curse.maven:apotheosis-${apotheosis_version}")
+    //runtimeOnly fg.deobf("curse.maven:apotheosis-${apotheosis_version}")
+    //runtimeOnly fg.deobf("curse.maven:placebo-${placebo_version}")
+    //runtimeOnly fg.deobf("curse.maven:attributeslib-${attributeslib_version}")
 
     // JSON ******************************************************************************************************
     implementation "com.google.code.gson:gson:${gson_version}"
@@ -171,7 +171,7 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs"            : "mixins.${mod_id}.json"
+                //"MixinConfigs"            : "mixins.${mod_id}.json"
         ])
     }
     exclude('**/*.psd')
