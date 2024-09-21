@@ -66,7 +66,7 @@ public class BloodBarrierEffect extends MagicMobEffect {
 
     public static boolean doEffect(LivingEntity livingEntity, DamageSource damageSource) {
         if (!livingEntity.level().isClientSide && !damageSource.is(DamageTypeTags.IS_FALL) && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !damageSource.is(DamageTypeTagGenerator.BYPASS_EVASION)) {
-            CustomSpellSyncData data =(CustomSpellSyncData) MagicData.getPlayerMagicData(livingEntity).getSyncedData();
+            CustomSpellSyncData data = (CustomSpellSyncData) MagicData.getPlayerMagicData(livingEntity).getSyncedData();
 
             data.subtractHit();
             if (data.getHitsRemaining() < 1) {
@@ -77,5 +77,4 @@ public class BloodBarrierEffect extends MagicMobEffect {
             return false;
         }
     }
-
-    }
+}

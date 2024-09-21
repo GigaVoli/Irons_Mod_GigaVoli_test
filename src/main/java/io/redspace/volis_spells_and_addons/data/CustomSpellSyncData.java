@@ -9,6 +9,7 @@ import io.redspace.ironsspellbooks.network.ClientboundSyncEntityData;
 import io.redspace.ironsspellbooks.network.ClientboundSyncPlayerData;
 import io.redspace.ironsspellbooks.player.SpinAttackType;
 import io.redspace.ironsspellbooks.setup.Messages;
+import io.redspace.volis_spells_and_addons.packets.CustomPacketManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
@@ -144,8 +145,8 @@ public class CustomSpellSyncData extends SyncedSpellData {
     public void doSync() {
         LivingEntity var3 = this.livingEntity;
         if (var3 instanceof ServerPlayer serverPlayer) {
-            Messages.sendToPlayer(new ClientboundSyncPlayerData(this), serverPlayer);
-            Messages.sendToPlayersTrackingEntity(new ClientboundSyncPlayerData(this), serverPlayer);
+            Messages.sendToPlayer(new CustomPacketManager(this), serverPlayer);
+            Messages.sendToPlayersTrackingEntity(new CustomPacketManager(this), serverPlayer);
         } else {
             var3 = this.livingEntity;
             if (var3 instanceof IMagicEntity abstractSpellCastingMob) {
@@ -156,7 +157,7 @@ public class CustomSpellSyncData extends SyncedSpellData {
     }
 
     public void syncToPlayer(ServerPlayer serverPlayer) {
-        Messages.sendToPlayer(new ClientboundSyncPlayerData(this), serverPlayer);
+        Messages.sendToPlayer(new CustomPacketManager(this), serverPlayer);
     }
 
     public boolean isCasting() {
