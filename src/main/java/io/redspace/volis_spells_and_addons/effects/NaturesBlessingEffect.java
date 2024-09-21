@@ -14,13 +14,13 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class NaturesBlessingEffect extends MagicMobEffect {
     public static MagicMobEffect FORESTS_BLESSING;
-    public static final float SPEED_PER_LEVEL = 0.1f;
+    public static final float SPEED_PER_LEVEL = 1.1f;
     public static final float KNOCKBACK_RESISTANCE_PER_LEVEL = 10f;
-    public static final float MAX_HEALTH_PER_LEVEL = 1f;
+    public static final float MAX_HEALTH_PER_LEVEL = 1.1f;
     static{
         FORESTS_BLESSING = new MagicMobEffect(MobEffectCategory.BENEFICIAL, 14270531);
-        FORESTS_BLESSING.addAttributeModifier(Attributes.MOVEMENT_SPEED, "39db1030-8df6-4329-b18f-fafc9d7f5b82", (SPEED_PER_LEVEL - 0.5), AttributeModifier.Operation.MULTIPLY_TOTAL);
-        FORESTS_BLESSING.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, "3db1030-8df6-4329-b18f-fac9d7f5b82", (KNOCKBACK_RESISTANCE_PER_LEVEL), AttributeModifier.Operation.MULTIPLY_TOTAL);
+        FORESTS_BLESSING.addAttributeModifier(Attributes.MOVEMENT_SPEED, "39db1030-8df6-4329-b18f-fafc9d7f5b82", (SPEED_PER_LEVEL), AttributeModifier.Operation.MULTIPLY_TOTAL);
+        FORESTS_BLESSING.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, "3db1030-8df6-4329-b18f-fac9d7f5b82", (KNOCKBACK_RESISTANCE_PER_LEVEL), AttributeModifier.Operation.ADDITION);
         FORESTS_BLESSING.addAttributeModifier(Attributes.MAX_HEALTH, "3db1030-8df6-9-b18f-fac9d7f5b82", (MAX_HEALTH_PER_LEVEL), AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 

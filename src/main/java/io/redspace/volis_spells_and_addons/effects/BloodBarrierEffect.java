@@ -4,6 +4,7 @@ import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.capabilities.magic.MagicManager;
 import io.redspace.ironsspellbooks.capabilities.magic.SyncedSpellData;
 import io.redspace.ironsspellbooks.datagen.DamageTypeTagGenerator;
+import io.redspace.ironsspellbooks.effect.AbyssalShroudEffect;
 import io.redspace.ironsspellbooks.effect.EvasionEffect;
 import io.redspace.ironsspellbooks.effect.MagicMobEffect;
 import io.redspace.ironsspellbooks.registries.MobEffectRegistry;
@@ -30,6 +31,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class BloodBarrierEffect extends MagicMobEffect {
     public static MagicMobEffect BLOOD_BARRIER;
+
     public BloodBarrierEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }
@@ -40,25 +42,45 @@ public class BloodBarrierEffect extends MagicMobEffect {
 
     public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
         super.removeAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
-        MagicData.getPlayerMagicData(pLivingEntity).getSyncedData().removeEffects(2L);
+        MagicData.getPlayerMagicData(pLivingEntity).getSyncedData().removeEffects(256L);
     }
 
     public void addAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
         super.addAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
-        MagicData.getPlayerMagicData(pLivingEntity).getSyncedData().addEffects(2L);
-        MagicData.getPlayerMagicData(pLivingEntity).getSyncedData().setEvasionHitsRemaining(pAmplifier);
+        MagicData.getPlayerMagicData(pLivingEntity).getSyncedData().addEffects(256L);
+        CustomSpellSyncData.setBloodCounter(pAmplifier);
     }
 
     public static boolean doEffect(LivingEntity livingEntity, DamageSource damageSource) {
         if (!livingEntity.level().isClientSide && !damageSource.is(DamageTypeTags.IS_FALL) && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !damageSource.is(DamageTypeTagGenerator.BYPASS_EVASION)) {
             SyncedSpellData data = MagicData.getPlayerMagicData(livingEntity).getSyncedData();
-            data.subtractEvasionHit();
-            if (data.getEvasionHitsRemaining() < 0) {
+
+            CustomSpellSyncData.decrement();
+            if (CustomSpellSyncData.getBloodCounter() < 1) {
                 livingEntity.removeEffect((MagicMobEffect) EffectRegistry.BLOOD_BARRIER.get());
             }
             return true;
         } else {
             return false;
+        }
+    }
+    public class CustomSpellSyncData extends SyncedSpellData{
+
+        public static final long BLOOD_COUNTER = 256;
+        private int hitsRemaining;
+
+        public void decrement() {
+            hitsRemaining --;
+        }
+        public int getBloodCounter() {
+            return hitsRemaining;
+        }
+
+        public static void setBloodCounter(int BLOOD_COUNTER) {
+            BLOOD_COUNTER = BLOOD_COUNTER;
+        }
+        public CustomSpellSyncData(LivingEntity livingEntity) {
+            super(livingEntity);
         }
     }
 }
