@@ -1,0 +1,13 @@
+{
+  "spell.volis_spells_and_addons.super_heal": "Super Heal",
+  "spell.volis_spells_and_addons.super_heal.guide": "Cast to heal yourself 5 percent of your maximum health per level, per second.",
+  "spell.volis_spells_and_addons.natures_blessing": "Natures Blessing",
+  "spell.volis_spells_and_addons.natures_blessing.guide": "Cast to grant various buffs to yourself and nearby entities.",
+  "effect.volis_spells_and_addons.natures_blessing": "Natures Blessing",
+  "effect.volis_spells_and_addons.blood_barrier": "Blood Barrier",
+  "tooltip.volis_spells_and_addons.blood_barrier_description": "Blocks %d hits",
+
+  "ui.volis_spells_and_addons.healing": "%d Healing",
+
+  "item.volis_spells_and_addons.example_magic_sword": "Example Magic Sword"
+}

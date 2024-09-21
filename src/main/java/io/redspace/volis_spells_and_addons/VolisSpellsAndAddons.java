@@ -1,8 +1,9 @@
-package io.redspace.irons_example_mod;
+package io.redspace.volis_spells_and_addons;
 
 import com.mojang.logging.LogUtils;
-import io.redspace.irons_example_mod.registry.ItemRegistry;
-import io.redspace.irons_example_mod.registry.ExampleSpellRegistry;
+import io.redspace.volis_spells_and_addons.registry.EffectRegistry;
+import io.redspace.volis_spells_and_addons.registry.ItemRegistry;
+import io.redspace.volis_spells_and_addons.registry.ExampleSpellRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -15,16 +16,17 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(IronsExampleMod.MODID)
-public class IronsExampleMod {
-    public static final String MODID = "irons_example_mod";
+@Mod(VolisSpellsAndAddons.MODID)
+public class VolisSpellsAndAddons {
+    public static final String MODID = "volis_spells_and_addons";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public IronsExampleMod() {
+    public VolisSpellsAndAddons() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
         ExampleSpellRegistry.register(modEventBus);
         ItemRegistry.register(modEventBus);
+        EffectRegistry.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
     }
 

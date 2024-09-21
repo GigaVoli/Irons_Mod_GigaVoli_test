@@ -1,7 +1,7 @@
-package io.redspace.irons_example_mod.registry;
+package io.redspace.volis_spells_and_addons.registry;
 
-import io.redspace.irons_example_mod.IronsExampleMod;
-import io.redspace.irons_example_mod.items.ExampleMagicSword;
+import io.redspace.volis_spells_and_addons.VolisSpellsAndAddons;
+import io.redspace.volis_spells_and_addons.items.ExampleMagicSword;
 import io.redspace.ironsspellbooks.api.registry.SpellDataRegistryHolder;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ItemRegistry {
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, IronsExampleMod.MODID);
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, VolisSpellsAndAddons.MODID);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
