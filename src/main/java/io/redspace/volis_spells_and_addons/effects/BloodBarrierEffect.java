@@ -12,6 +12,8 @@ import io.redspace.volis_spells_and_addons.registry.EffectRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -30,7 +32,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class BloodBarrierEffect extends MagicMobEffect {
-    public static MagicMobEffect BLOOD_BARRIER;
 
     public BloodBarrierEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
@@ -66,7 +67,7 @@ public class BloodBarrierEffect extends MagicMobEffect {
     }
     public class CustomSpellSyncData extends SyncedSpellData{
 
-        public static final long BLOOD_COUNTER = 256;
+        public static final long BLOOD_BARRIER = 256;
         private int hitsRemaining;
 
         public void decrement() {
@@ -76,11 +77,23 @@ public class BloodBarrierEffect extends MagicMobEffect {
             return hitsRemaining;
         }
 
-        public static void setBloodCounter(int BLOOD_COUNTER) {
-            BLOOD_COUNTER = BLOOD_COUNTER;
+        public void setBloodCounter(int hitsRemaining) {
+            this.hitsRemaining = hitsRemaining;
         }
         public CustomSpellSyncData(LivingEntity livingEntity) {
             super(livingEntity);
+            hitsRemaining = 0;
+        }
+        public SyncedSpellData read(FriendlyByteBuf buffer) {
+            var data = new SyncedSpellData(buffer.readInt());
+            hitsRemaining = buffer.readInt();
+            return data;
+        }
+        public void saveNBTData(CompoundTag compound) {
+            compound.putFloat("bloodHitsRemaining", this.hitsRemaining);
+            learnedSpellData.saveToNBT(compound);
+            compound.put("spellSelection", this.spellSelection.serializeNBT());
+            //SpinAttack not saved
         }
     }
 }
