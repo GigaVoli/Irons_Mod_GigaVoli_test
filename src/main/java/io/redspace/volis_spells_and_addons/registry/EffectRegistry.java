@@ -1,5 +1,6 @@
 package io.redspace.volis_spells_and_addons.registry;
 
+import io.redspace.ironsspellbooks.effect.EvasionEffect;
 import io.redspace.volis_spells_and_addons.VolisSpellsAndAddons;
 import io.redspace.ironsspellbooks.effect.MagicMobEffect;
 import io.redspace.volis_spells_and_addons.effects.BloodBarrierEffect;
@@ -23,7 +24,7 @@ public class EffectRegistry {
             return NaturesBlessingEffect.FORESTS_BLESSING;
         });
         BLOOD_BARRIER = MOB_EFFECT_DEFERRED_REGISTER.register("blood_barrier", () -> {
-            return BloodBarrierEffect.BLOOD_BARRIER;
+            return new BloodBarrierEffect(MobEffectCategory.BENEFICIAL, 10423267);
         });
     }
     public static void register(IEventBus modEventBus) {
