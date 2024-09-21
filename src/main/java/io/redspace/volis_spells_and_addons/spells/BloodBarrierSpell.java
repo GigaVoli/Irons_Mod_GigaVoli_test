@@ -8,11 +8,14 @@ import io.redspace.ironsspellbooks.api.util.AnimationHolder;
 import io.redspace.ironsspellbooks.api.util.Utils;
 import io.redspace.ironsspellbooks.capabilities.magic.MagicManager;
 import io.redspace.volis_spells_and_addons.VolisSpellsAndAddons;
+import io.redspace.volis_spells_and_addons.registry.EffectRegistry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -73,7 +76,7 @@ public class BloodBarrierSpell extends AbstractSpell {
 
     @Override
     public void onCast(Level world, int spellLevel, LivingEntity entity, CastSource castSource, MagicData playerMagicData) {
-
+        entity.addEffect(new MobEffectInstance((MobEffect) EffectRegistry.BLOOD_BARRIER.get(), 2400, (int) this.getSpellPower(spellLevel, entity) - 1, false, false, true));
         super.onCast(world, spellLevel, entity, castSource, playerMagicData);
     }
 
