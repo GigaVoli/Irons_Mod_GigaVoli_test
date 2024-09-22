@@ -32,6 +32,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -55,26 +56,28 @@ public class BloodBarrierEffect extends MagicMobEffect {
 
     public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
         super.removeAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
-        MagicData.getPlayerMagicData(pLivingEntity).getSyncedData().removeEffects(256L);
+        MagicData.getPlayerMagicData(pLivingEntity).getSyncedData().removeEffects(CustomSpellSyncData.BLOOD_BARRIER);
     }
 
     public void addAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
         super.addAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
-        MagicData.getPlayerMagicData(pLivingEntity).getSyncedData().addEffects(256L);
-        ((CustomSpellSyncData) MagicData.getPlayerMagicData(pLivingEntity).getSyncedData()).setHitsRemaining(pAmplifier);
+        MagicData.getPlayerMagicData(pLivingEntity).getSyncedData().addEffects(CustomSpellSyncData.BLOOD_BARRIER);
+        CustomSpellSyncData.setHitsRemaining(pAmplifier);
     }
 
     public static boolean doEffect(LivingEntity livingEntity, DamageSource damageSource) {
-        if (!livingEntity.level().isClientSide && !damageSource.is(DamageTypeTags.IS_FALL) && !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !damageSource.is(DamageTypeTagGenerator.BYPASS_EVASION)) {
-            CustomSpellSyncData data = (CustomSpellSyncData) MagicData.getPlayerMagicData(livingEntity).getSyncedData();
-
-            data.subtractHit();
-            if (data.getHitsRemaining() < 1) {
-                livingEntity.removeEffect((MagicMobEffect) EffectRegistry.BLOOD_BARRIER.get());
-            }
-            return true;
-        } else {
+        if (livingEntity.level().isClientSide
+                || damageSource.is(DamageTypeTags.IS_FALL)
+                || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
+                || damageSource.is(DamageTypeTagGenerator.BYPASS_EVASION)) {
             return false;
         }
+
+        var data = MagicData.getPlayerMagicData(livingEntity).getSyncedData();
+        data.subtractEvasionHit();
+        if (data.getEvasionHitsRemaining() < 0) {
+            livingEntity.removeEffect(MobEffectRegistry.EVASION.get());
+        }
+        return true;
     }
 }

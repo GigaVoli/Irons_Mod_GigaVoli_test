@@ -1,8 +1,15 @@
 package io.redspace.volis_spells_and_addons.data;
 
 import io.redspace.ironsspellbooks.api.entity.IMagicEntity;
+import io.redspace.ironsspellbooks.api.events.ChangeManaEvent;
 import io.redspace.ironsspellbooks.api.magic.LearnedSpellData;
-import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
+import io.redspace.ironsspellbooks.api.magic.MagicData;
+import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
+import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
+import io.redspace.ironsspellbooks.api.spells.*;
+import io.redspace.ironsspellbooks.capabilities.magic.PlayerCooldowns;
+import io.redspace.ironsspellbooks.capabilities.magic.PlayerMagicProvider;
+import io.redspace.ironsspellbooks.capabilities.magic.PlayerRecasts;
 import io.redspace.ironsspellbooks.capabilities.magic.SyncedSpellData;
 import io.redspace.ironsspellbooks.gui.overlays.SpellSelection;
 import io.redspace.ironsspellbooks.network.ClientboundSyncEntityData;
@@ -10,28 +17,30 @@ import io.redspace.ironsspellbooks.network.ClientboundSyncPlayerData;
 import io.redspace.ironsspellbooks.player.SpinAttackType;
 import io.redspace.ironsspellbooks.setup.Messages;
 import io.redspace.volis_spells_and_addons.packets.CustomPacketManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.Nullable;
 
 public class CustomSpellSyncData extends SyncedSpellData {
     public static final long BLOOD_BARRIER = 256L;
-    private int hitsRemaining;
+    public int hitsRemaining;
     private @Nullable LivingEntity livingEntity;
     private boolean isCasting;
     private String castingSpellId;
     private int castingSpellLevel;
     private long syncedEffectFlags;
     private long localEffectFlags;
-    private float heartStopAccumulatedDamage;
-    private int evasionHitsRemaining;
-    private SpinAttackType spinAttackType;
     private LearnedSpellData learnedSpellData;
     private SpellSelection spellSelection;
-    private String castingEquipmentSlot;
     public static final EntityDataSerializer<CustomSpellSyncData> SYNCED_SPELL_DATA = new EntityDataSerializer.ForValueType<CustomSpellSyncData>() {
         public void write(FriendlyByteBuf buffer, CustomSpellSyncData data) {
             buffer.writeInt(data.hitsRemaining);
@@ -79,10 +88,6 @@ public class CustomSpellSyncData extends SyncedSpellData {
         return (this.syncedEffectFlags & effectFlags) == effectFlags;
     }
 
-    public String getCastingEquipmentSlot() {
-        return this.castingEquipmentSlot;
-    }
-
     public boolean hasLocalEffect(long effectFlags) {
         return (this.localEffectFlags & effectFlags) == effectFlags;
     }
@@ -104,32 +109,12 @@ public class CustomSpellSyncData extends SyncedSpellData {
         this.doSync();
     }
 
-    public void learnSpell(AbstractSpell spell) {
-        this.learnedSpellData.learnedSpells.add(spell.getSpellResource());
-        this.doSync();
-    }
-
-    public void forgetAllSpells() {
-        this.learnedSpellData.learnedSpells.clear();
-        this.doSync();
-    }
-
-    public boolean isSpellLearned(AbstractSpell spell) {
-        return !spell.needsLearning() || this.learnedSpellData.learnedSpells.contains(spell.getSpellResource());
-    }
-
-    public int getHitsRemaining() {
-        return this.hitsRemaining;
-    }
-
     public void subtractHit() {
         --this.hitsRemaining;
         this.doSync();
     }
 
-    public void setHitsRemaining(int hitsRemaining) {
-        this.hitsRemaining = hitsRemaining;
-        this.doSync();
+    public static void setHitsRemaining(int hitsRemaining) {
     }
 
     public void addEffects(long effectFlags) {
